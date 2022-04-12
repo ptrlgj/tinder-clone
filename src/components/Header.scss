@@ -1,0 +1,13 @@
+.header{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    border-bottom: 1px solid #f9f9f9;
+    padding: 1rem;
+    .header__logo{
+        background: linear-gradient(35deg, #FD297B, #FF655B);
+        color: white !important;
+        font-size: 2rem;
+        object-fit: contain;
+    }
+}
