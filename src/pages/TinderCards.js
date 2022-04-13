@@ -3,6 +3,7 @@ import TinderCard from 'react-tinder-card'
 import collectionReference from '../firebase'
 import {doc, getDocs} from 'firebase/firestore'
 import './TinderCards.scss'
+import SwipeButtons from '../components/SwipeButtons'
 function TinderCards() {
     const [people, setPeople] = useState([])
     //  [
@@ -42,6 +43,7 @@ function TinderCards() {
                 </TinderCard>
             })}
         </div>
+        <SwipeButtons />
     </div>
   )
 }

@@ -3,19 +3,30 @@ import './Header.scss'
 import PersonIcon from '@mui/icons-material/Person';
 import ForumIcon from '@mui/icons-material/Forum';
 import WhatshotIcon from '@mui/icons-material/Whatshot';
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import { IconButton } from '@mui/material';
+import {Link, useNavigate} from 'react-router-dom';
 
-
-function Header() {
+function Header({backButton}) {
+  const navigate = useNavigate()
   return (
     <header className="header">
-        <IconButton>
-          <PersonIcon />
-        </IconButton>
-        <WhatshotIcon className='header__logo'/>
-        <IconButton>
-          <ForumIcon />
-        </IconButton>
+        {backButton ? (
+            <IconButton onClick={()=>navigate(backButton)}>
+              <ArrowBackIosIcon />
+            </IconButton>
+          ) :(
+            <IconButton >
+              <PersonIcon />
+            </IconButton>) }
+        <Link to="/">
+          <WhatshotIcon className='header__logo'/>
+        </Link>
+        <Link to="/chats">
+          <IconButton>
+            <ForumIcon />
+          </IconButton>
+        </Link>
     </header>
   )
 }
