@@ -12,8 +12,8 @@ const firebaseConfig = {
 
 initializeApp(firebaseConfig);
 
-const database = getFirestore()
+export const database = getFirestore()
 
-const collectionReference = collection(database, "people")
+export const collectionReference = collection(database, "people")
 
-export default collectionReference;
+// export default collectionReference;

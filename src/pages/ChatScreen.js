@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import { useParams } from 'react-router-dom';
 import './ChatScreen.scss';
 import { Avatar } from '@mui/material';
-
+import {database} from '../firebase'
 function ChatScreen() {
+
     const [messages, setMessages ] = useState([
         {
             name: "Bubr",

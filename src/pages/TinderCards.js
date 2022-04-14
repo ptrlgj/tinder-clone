@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import TinderCard from 'react-tinder-card'
-import collectionReference from '../firebase'
+import {collectionReference} from '../firebase'
 import {doc, getDocs} from 'firebase/firestore'
 import './TinderCards.scss'
 import SwipeButtons from '../components/SwipeButtons'
