@@ -4,19 +4,10 @@ import { Link } from 'react-router-dom'
 import {database} from '../firebase'
 import {collection} from 'firebase/firestore'
 import { getDocs} from 'firebase/firestore'
+import { useGlobalContext } from '../contexts'
 import './Chats.scss'
 function Chats() {
-  const [chats, setChats] = useState([]);
-  useEffect(()=>{
-    const collectionReference = collection(database, 'chats');
-    getDocs(collectionReference)
-        .then((snapshot)=>{
-          snapshot.docs.forEach(doc=> {
-            setChats(doc.data().chats)
-          })
-        })
-        .catch(error=>console.log(error))
-  },[])
+  const {chats} = useGlobalContext()
 
   return (
     <section className="chats">

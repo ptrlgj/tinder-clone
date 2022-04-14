@@ -1,59 +1,45 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
 import './ChatScreen.scss';
 import { Avatar } from '@mui/material';
-import {database} from '../firebase'
+import { useGlobalContext } from '../contexts';
 function ChatScreen() {
-
-    const [messages, setMessages ] = useState([
-        {
-            name: "Bubr",
-            image: 'https://d-art.ppstatic.pl/kadry/k/r/1/2c/e9/5d0e3dea43112_o_medium.jpg',
-            message: "hej"
-        },
-        {
-            name: "Bubr",
-            image: 'https://d-art.ppstatic.pl/kadry/k/r/1/2c/e9/5d0e3dea43112_o_medium.jpg',
-            message: "czesc"
-        },
-        {
-            name: "Bubr",
-            image: 'https://d-art.ppstatic.pl/kadry/k/r/1/2c/e9/5d0e3dea43112_o_medium.jpg',
-            message: "hej, jestes?"
-        },
-        {
-            name: "Bubr",
-            image: 'https://d-art.ppstatic.pl/kadry/k/r/1/2c/e9/5d0e3dea43112_o_medium.jpg',
-            message: "odpisz prosze"
-        },
-        {
-            message: "zostaw mnie prosze"
-        },
-        {
-            name: "Bubr",
-            image: 'https://d-art.ppstatic.pl/kadry/k/r/1/2c/e9/5d0e3dea43112_o_medium.jpg',
-            message: "ok"
-        },
-        {
-            name: "Bubr",
-            image: 'https://d-art.ppstatic.pl/kadry/k/r/1/2c/e9/5d0e3dea43112_o_medium.jpg',
-            message: "elo masz morze porzyczyc jakoms kłode"
-        },
-    ]);
-    const [input, setInput] = useState('')
+    const {chats, setChats} = useGlobalContext()
     const params = useParams();
-    function handleSubmit(e){
+    const [messages, setMessages ] = useState(null);
+    const [profilePic, setProfilePic] = useState('');
+    const [input, setInput] = useState('')
+
+    async function handleSubmit(e){
         e.preventDefault();
-        setMessages(messages => [...messages,{message: input}])
-        setInput('')
+        if(input){
+            setMessages({...messages, messages: [...messages.messages, {message: input}]})
+            setInput('')}
     }
-  return (
-    <div className="chatScreen">
+
+    function updateChats(){
+        if(messages){
+            const tempChats = chats.filter(chat=>chat.name !== messages.name);
+            setChats([ messages, ...tempChats])
+        }
+    }
+    useEffect(()=>{
+        setMessages( chats.filter(chat=>{
+            if(chat.name.toLowerCase() === params.person.toLowerCase()) setProfilePic(chat.image)
+            return (chat.name.toLowerCase() === params.person.toLowerCase())
+        })[0])
+    }, [])
+    useEffect(()=>{
+        updateChats()
+    },[messages])
+    return (
+        <div className="chatScreen">
         <p className="chatScreen__timestamp">YOU MATCHED WITH {params.person.toUpperCase()} ON 10/04/2022</p>
-        {messages.map((message, index) => {
+        {/* <button onClick={() => console.log(chats, messages)}>sprawdz</button> */}
+        {messages ? messages.messages.map((message, index) => {
             return message.name ? (
                 <div key={index} className="chatScreen__message">
-                    <Avatar alt={message.name} src={message.image} className="chatScreen__image"/>
+                    <Avatar alt={message.name} src={profilePic} className="chatScreen__image"/>
                     <p className="chatScreen__text">{message.message}</p>
                 </div>
             ):(
@@ -61,7 +47,7 @@ function ChatScreen() {
                     <p className="chatScreen__textUser">{message.message}</p>
                 </div>
             )
-        })}
+        }) : null}
         <form 
             className="chatScreen__input"
             onSubmit={handleSubmit}
